@@ -1,0 +1,83 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_help_scout/flutter_help_scout.dart';
+
+void main() async {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Help Scout Example',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: MyHomePage(),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  // create an instance of Flutter Help Scout and pass the beacon ID and other values to it
+  late FlutterHelpScout _beacon;
+  String beaconId = '7eb66e89-af34-4810-9098-71f872aa1440';
+
+  
+  // Platform messages are asynchronous, so we initialize in an async method.
+  Future<void> initBeacon() async {
+
+
+    
+    _beacon = FlutterHelpScout(
+        beaconId: beaconId,
+        email: 'hello@foruslabs.com',
+        name: 'John Doe',
+        avatar: 'https://avatars3.githubusercontent.com/u/53996412?s=460&v=4');
+
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      _beacon.initialize();
+    } on PlatformException catch (e) {
+      debugPrint('${e.message}');
+    }
+  }
+
+  @override
+  void initState() {
+    // initialize beacon
+    initBeacon();
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Help Scott Example'),
+      ),
+      body: Center(child: 
+        ElevatedButton(
+          child: Text(
+            'Open Beacon',
+            style: TextStyle(color: Colors.white),
+          ),
+          onPressed: () {
+            //_beacon.open(beaconId: beaconId);
+            _beacon.open(beaconId: beaconId);
+
+          },
+        ),
+      )
+    );
+  }
+}
